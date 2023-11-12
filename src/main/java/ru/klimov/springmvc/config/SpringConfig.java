@@ -19,6 +19,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 // чтобы настроить шаблонизатор Thymeleaf под себя
 @Configuration
 @ComponentScan("ru.klimov.springmvc")
+@EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
 
