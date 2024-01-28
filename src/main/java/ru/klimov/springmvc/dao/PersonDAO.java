@@ -3,8 +3,13 @@ package ru.klimov.springmvc.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import ru.klimov.springmvc.models.Book;
 import ru.klimov.springmvc.models.Person;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Component
@@ -43,4 +48,26 @@ public class PersonDAO {
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
     }
+
+    public List<Book> getBooksTakenByPerson(int id) {
+        List<Book> result =  jdbcTemplate.query("SELECT name, author, year FROM Person LEFT JOIN Book ON Person.id = Book.personId WHERE Person.id=?",
+                new Object[]{id},
+                new RowMapper<Book>() {
+                    @Override
+                    public Book mapRow(ResultSet resultSet, int i) throws SQLException {
+                        Book book = new Book();
+                        book.setName(resultSet.getString("name"));
+                        book.setAuthor(resultSet.getString("author"));
+                        book.setYear(resultSet.getInt("year"));
+                        return book;
+                    }
+                });
+        if (isEmptyList(result)) result.clear();
+        return result;
+    }
+
+    private boolean isEmptyList(List<Book> result) {
+        return result.get(0).getAuthor() == null;
+    }
+
 }

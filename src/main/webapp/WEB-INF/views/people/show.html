@@ -5,8 +5,20 @@
     <title>Человек</title>
 </head>
 <body>
-    <p th:text="${person.getFullName()}">VALUE</p>
-    <p th:text="${person.getDateOfBirth()}">VALUE</p>
+    <p th:text="${person.getFullName() + ', ' + person.getDateOfBirth()}"></p>
+    <div th:switch="${books.isEmpty()}">
+        <div th:case="False">
+            <hr>
+            <p><b>Книги:</b></p>
+            <div th:each="book: ${books}">
+                <p th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}"></p>
+            </div>
+        </div>
+        <p th:case="True">Человек пока не взял ни одной книги</p>
+        <p th:case="*">Произошла ошибка при отображении списка книг</p>
+    </div>
+    <hr>
+
     <form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getId()})}">
         <input type="submit" value="Изменить">
     </form>
