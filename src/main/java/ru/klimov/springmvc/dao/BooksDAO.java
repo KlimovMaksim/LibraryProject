@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.klimov.springmvc.models.Book;
+import ru.klimov.springmvc.models.Person;
 
 import java.util.List;
 
@@ -47,5 +48,16 @@ public class BooksDAO {
 
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM book WHERE id=?", id);
+    }
+
+    public void assign(int id, Person person) {
+        jdbcTemplate.update("UPDATE Book SET personId=? WHERE id=?",
+                person.getId(),
+                id);
+    }
+
+    public void release(int id){
+        jdbcTemplate.update("UPDATE Book SET personId=NULL WHERE id=?",
+                id);
     }
 }
