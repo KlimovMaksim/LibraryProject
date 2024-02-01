@@ -36,10 +36,12 @@ public class BooksController {
                        @ModelAttribute("person") Person person,
                        Model model){
         Book book = booksDAO.show(id);
-        model.addAttribute("people", personDAO.index());
         model.addAttribute("book", book);
-        if (!Objects.isNull(book.getPersonId()))
+        if (book.getPersonId() != null)
             model.addAttribute("bookOwner", personDAO.show(Integer.parseInt(book.getPersonId())));
+        else {
+            model.addAttribute("people", personDAO.index());
+        }
         return "books/show";
     }
 
