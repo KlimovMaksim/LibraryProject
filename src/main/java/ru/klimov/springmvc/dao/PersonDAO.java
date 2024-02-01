@@ -11,6 +11,7 @@ import ru.klimov.springmvc.models.Person;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PersonDAO {
@@ -30,6 +31,12 @@ public class PersonDAO {
        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?",
                        new Object[]{id},
                        new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
+    }
+
+    public Optional<Person> show(String fullName){
+        return jdbcTemplate.query("SELECT * FROM Person WHERE fullname=?",
+                new Object[]{fullName},
+                new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
     }
 
     public void save(Person person){
@@ -69,5 +76,4 @@ public class PersonDAO {
     private boolean isEmptyList(List<Book> result) {
         return result.get(0).getAuthor() == null;
     }
-
 }
