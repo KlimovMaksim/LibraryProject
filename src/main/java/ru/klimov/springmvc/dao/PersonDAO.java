@@ -27,10 +27,10 @@ public class PersonDAO {
                 new BeanPropertyRowMapper<>(Person.class));
     }
 
-    public Person show(int id){
+    public Optional<Person> show(int id){
        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?",
                        new Object[]{id},
-                       new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
+                       new BeanPropertyRowMapper<>(Person.class)).stream().findAny()/*.orElse(null)*/;
     }
 
     public Optional<Person> show(String fullName){

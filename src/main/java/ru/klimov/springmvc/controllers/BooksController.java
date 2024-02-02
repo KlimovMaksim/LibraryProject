@@ -38,7 +38,7 @@ public class BooksController {
         Book book = booksDAO.show(id);
         model.addAttribute("book", book);
         if (book.getPersonId() != null)
-            model.addAttribute("bookOwner", personDAO.show(Integer.parseInt(book.getPersonId())));
+            model.addAttribute("bookOwner", personDAO.show(Integer.parseInt(book.getPersonId())).get());
         else {
             model.addAttribute("people", personDAO.index());
         }
